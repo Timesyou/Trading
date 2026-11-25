@@ -1,0 +1,12 @@
+{
+  "name": "ati-trading",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ATI broker-neutral research and paper-trading foundation",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --check src/market-data.js && node --check src/risk.js && node --check src/paper-broker.js"
+  }
+}
