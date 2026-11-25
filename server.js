@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { runSmaBacktest } from "./src/backtest.js";
+import { validateCandles } from "./src/market-data.js";
 import { PaperBroker } from "./src/paper-broker.js";
 
 const root = fileURLToPath(new URL("./public/", import.meta.url));
@@ -27,7 +28,9 @@ const server = createServer(async (req, res) => {
     if (req.method === "GET" && url.pathname === "/api/paper/state") return send(res, 200, broker.snapshot());
     if (req.method === "POST" && url.pathname === "/api/backtest") {
       const input = await body(req);
-      return send(res, 200, runSmaBacktest(input.candles, input.options || {}));
+      const lastTime = Array.isArray(input.candles) && input.candles.length ? Number(input.candles.at(-1).time) || Date.parse(input.candles.at(-1).time) : NaN;
+      const validated = validateCandles(input.candles, { now: lastTime, maxAgeMs: 0 });
+      return send(res, 200, runSmaBacktest(validated, input.options || {}));
     }
     if (req.method === "POST" && url.pathname === "/api/paper/order") {
       const input = await body(req);
