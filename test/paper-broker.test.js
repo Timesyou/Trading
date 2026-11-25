@@ -25,3 +25,11 @@ test("rejects order over configured limit", () => {
   const broker = new PaperBroker({ maxOrderValue: 100 });
   assert.throws(() => broker.placeOrder({ symbol: "TCS", side: "BUY", quantity: 2, price: 100 }), /maximum order value/);
 });
+
+test("realized daily loss blocks further paper orders", () => {
+  const broker = new PaperBroker({ initialCash: 10000, maxOrderValue: 5000, maxDailyLoss: 5, feeRate: 0, slippageBps: 0 });
+  broker.placeOrder({ symbol: "INFY", side: "BUY", quantity: 1, price: 100 });
+  broker.placeOrder({ symbol: "INFY", side: "SELL", quantity: 1, price: 90 });
+  assert.equal(broker.snapshot().dailyLoss, 10);
+  assert.throws(() => broker.placeOrder({ symbol: "INFY", side: "BUY", quantity: 1, price: 100 }), /Daily loss limit/);
+});
