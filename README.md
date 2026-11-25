@@ -7,10 +7,11 @@ ATI is being built as a broker-neutral research and paper-trading system. This r
 This first commit establishes a small, dependency-free Node.js foundation:
 - Market-data contract with OHLCV validation and ordered provider failover.
 - Fail-closed behavior when providers return stale, malformed, or unavailable data.
-- Long-only paper broker with fees, slippage, order-value limits, audit events, and an emergency kill switch.
+- Long-only paper broker with fees, slippage, average-cost tracking, realized daily-loss guard, audit events, and an emergency kill switch.
+- SMA crossover backtest with next-candle-open fills, transaction costs, equity curve, and drawdown reporting.
 - Automated Node.js tests and GitHub Actions CI.
 
-**Not implemented:** AI predictions, strategy research, backtesting, exchange/broker adapters, real-time feeds, web dashboard, persistence, authentication, deployment, or live order execution. No profitability or prediction-accuracy claim is made.
+**Not implemented:** AI predictions, exchange/broker adapters, real-time feeds, web dashboard, persistent storage, authentication, deployment, or live order execution. The included SMA backtest is a baseline simulator, not a validated profitable strategy. No profitability or prediction-accuracy claim is made.
 
 ## Requirements
 
