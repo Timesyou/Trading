@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "node --test",
-    "check": "node --check src/market-data.js && node --check src/risk.js && node --check src/paper-broker.js && node --check src/backtest.js"
+    "check": "node --check src/market-data.js && node --check src/risk.js && node --check src/paper-broker.js && node --check src/backtest.js && node --check server.js",
+    "start": "node server.js"
   }
 }
